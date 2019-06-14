@@ -13,24 +13,36 @@ namespace Battle
 
         public void RunGame()
         {
-            var p = new Player("Joe", new Weapon("sword", 8));
-            Character[] enemies = new Character[] {
+            var finished = false;
+
+            while (!finished)
+            {
+                var p = new Player("Joe", new Weapon("sword", 8));
+                var enemies = new Character[] {
                 new Kobold("Rikrak"),
                 new Kobold("Okluk"),
                 new Wolf(),
                 new Orc("Morg"),
                 new Orc("Grog"),
-                new Drow("Morden", new Weapon("Lightening Bolt", 12))
+                new Drow("Morden", new Weapon("Lightning Bolt", 10))
             };
-            foreach (var enemy in enemies)
-            {
-                Fight(p, enemy);
-                if (!p.IsAlive)
+                foreach (var enemy in enemies)
                 {
-                    break;
+                    Fight(p, enemy);
+                    if (!p.IsAlive)
+                    {
+                        break;
+                    }
+                }
+                Console.WriteLine("Game over.\n");
+
+                Console.Write("Do you want to play again? ");
+                var answer = Console.ReadLine();
+                if (answer.ToLower() == "no")
+                {
+                    finished = true;
                 }
             }
-            Console.WriteLine("Game over.\n");
         }
 
 
