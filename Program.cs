@@ -14,12 +14,21 @@ namespace Battle
         public void RunGame()
         {
             var p = new Player("Joe", new Weapon("sword", 8));
-            var k1 = new Kobold("Rikrak");
-            Fight(p, k1);
-            if (p.IsAlive)
+            Character[] enemies = new Character[] {
+                new Kobold("Rikrak"),
+                new Kobold("Okluk"),
+                new Wolf(),
+                new Orc("Morg"),
+                new Orc("Grog"),
+                new Drow("Morden", new Weapon("Lightening Bolt", 12))
+            };
+            foreach (var enemy in enemies)
             {
-                var k2 = new Kobold("Okluk");
-                Fight(p, k2);
+                Fight(p, enemy);
+                if (!p.IsAlive)
+                {
+                    break;
+                }
             }
             Console.WriteLine("Game over.\n");
         }
@@ -30,7 +39,7 @@ namespace Battle
             p.Engage(m);
             m.Engage(p);
             Console.WriteLine($"{p} encounters {m}.\n");
-            while (m.IsAlive&& p.IsAlive)
+            while (m.IsAlive && p.IsAlive)
             {
                 p.Attack();
                 if (m.IsAlive)
@@ -46,7 +55,7 @@ namespace Battle
     }
 
 
-     // A character's weapon
+    // A character's weapon
     public class Weapon
     {
         private readonly Random _rand;
@@ -127,7 +136,7 @@ namespace Battle
     {
         private readonly String _name;
 
-        public Player(String myName, Weapon weapon) : base(10, 12, weapon, 1)
+        public Player(String myName, Weapon weapon) : base(50, 13, weapon, 4)
         {
             _name = myName;
         }
@@ -135,7 +144,7 @@ namespace Battle
         public override String ToString() => _name;
     }
 
-    // Our scary monster
+    // Our scary monsters
     public class Kobold : Character
     {
         private readonly String _name;
@@ -146,5 +155,39 @@ namespace Battle
         }
 
         public override String ToString() => "Kobold " + _name;
+    }
+
+    public class Orc : Character
+    {
+        private readonly String _name;
+
+        public Orc(String name) : base(7, 10, new Weapon("scimitar", 7), 3)
+        {
+            _name = name;
+        }
+
+        public override String ToString() => "Orc " + _name;
+    }
+
+
+    public class Wolf : Character
+    {
+        public Wolf() : base(3, 12, new Weapon("teeth", 4), 0)
+        { }
+
+        public override string ToString() => "a wolf ";
+    }
+
+
+    public class Drow : Character
+    {
+        private readonly String _name;
+
+        public Drow(String name, Weapon w) : base(15, 12, w, 5)
+        {
+            _name = name;
+        }
+
+        public override String ToString() => "Drow " + _name;
     }
 }
